@@ -1,0 +1,37 @@
+{
+  "author": "Vladimir Barbarosh",
+  "name": "@vbarbarosh/vue-pager",
+  "version": "1.0.0",
+  "description": "An abstraction for working with paged data",
+  "license": "ISC",
+  "main": "src/vue-pager.js",
+  "unpkg": "dist/vue-pager.js",
+  "jsdelivr": "dist/vue-pager.js",
+  "files": [
+    "src",
+    "dist/*.js"
+  ],
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vbarbarosh/vue-pager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vbarbarosh/vue-pager/issues"
+  },
+  "homepage": "https://vue-pager.vbarbarosh.com",
+  "peerDependencies": {
+    "bluebird": "^3.7.2",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
