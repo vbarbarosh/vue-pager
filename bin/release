@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# http://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -o nounset -o errexit -o pipefail
+
+script=`realpath $0`
+scriptdir=`dirname $script`
+scriptname=`basename $script`
+
+cd $scriptdir/..
+
+case "${1-}"  in
+major|minor|patch)
+    ;;
+*)
+    echo usage: release 'major|minor|patch' 2>&1
+    exit 1
+    ;;
+esac
+
+if test -n "`git status -s`"; then
+    echo error: there is changes 2>&1
+    exit 1
+fi
+
+# Increase a version without commiting it and making a tag
+# XXX This is a hack to disable commiting by substituting `true` for `git`
+npm version $1 --git=/bin/true
+# Rebuild dist
+rm -rf dist
+npm run build
+
+version=$(node -e 'console.log(require("./package.json").version)')
+# Update version in docs
+sed -i 's:\(<sub><sub>v\)[0-9]\+\.[0-9]\+\.[0-9]\+\(</sub></sub>\):\1'$version'\2:' docs/index.html
+
+git add package.json package-lock.json dist docs/index.html
+git commit -m "release v$version"
+
+# Create a tag
+git tag v$version
+
+# Submit changes to github
+git push
+git push --tags
+
+# Publish package on npm
+npm publish
