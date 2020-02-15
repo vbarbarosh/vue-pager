@@ -1,4 +1,4 @@
-An abstraction for working with paged data
+An abstraction for working with paged data in Vue
 
     Page:
     <select v-model="pager.page_active">
