@@ -5,7 +5,7 @@ function render_config(mode)
 
     return {
         mode,
-        entry: './src/vue-pager.js',
+        entry: './src/vue_pager.js',
         devtool: false,
         output: {
             filename: is_development ? 'vue-pager.js' : 'vue-pager.min.js',

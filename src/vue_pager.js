@@ -85,7 +85,7 @@ function vue_pager(fn, options = {})
             out.response = response;
             out.reactive.limit = response.limit;
             out.reactive.offset = response.offset;
-            out.page_total = Math.ceil(response.total/response.limit);
+            out.page_total = Math.ceil(response.total/response.limit) || 0;
             out.page_numbers = Array(out.page_total).fill(0).map((v,i) => i+1);
             out.total = response.total;
             // XXX rows for backward compatibility; will be remove at next major release

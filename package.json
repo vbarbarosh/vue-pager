@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "An abstraction for working with paged data",
   "license": "ISC",
-  "main": "src/vue-pager.js",
+  "main": "src/vue_pager.js",
   "unpkg": "dist/vue-pager.js",
   "jsdelivr": "dist/vue-pager.js",
   "files": [
