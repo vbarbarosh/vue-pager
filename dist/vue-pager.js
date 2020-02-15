@@ -82,14 +82,14 @@ var vue_pager =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/vue-pager.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/vue_pager.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/vue-pager.js":
+/***/ "./src/vue_pager.js":
 /*!**************************!*\
-  !*** ./src/vue-pager.js ***!
+  !*** ./src/vue_pager.js ***!
   \**************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -193,7 +193,7 @@ function vue_pager(fn) {
       out.response = response;
       out.reactive.limit = response.limit;
       out.reactive.offset = response.offset;
-      out.page_total = Math.ceil(response.total / response.limit);
+      out.page_total = Math.ceil(response.total / response.limit) || 0;
       out.page_numbers = Array(out.page_total).fill(0).map(function (v, i) {
         return i + 1;
       });
