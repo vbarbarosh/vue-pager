@@ -24,6 +24,8 @@ if test -n "`git status -s`"; then
     exit 1
 fi
 
+npm run test
+
 # Increase a version without commiting it and making a tag
 # XXX This is a hack to disable commiting by substituting `true` for `git`
 npm version $1 --git=/bin/true
