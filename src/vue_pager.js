@@ -82,6 +82,7 @@ function vue_pager(fn, options = {})
 
         function load_succeed(response) {
             if (t != token) return;
+            out.error = null;
             out.response = response;
             out.reactive.limit = response.limit;
             out.reactive.offset = response.offset;
@@ -100,7 +101,14 @@ function vue_pager(fn, options = {})
         function load_failed(error) {
             if (t != token) return;
             out.error = error;
-            throw error;
+            out.response = null;
+            // The first use-case for this options is vue_pager.m.js
+            if (typeof options.on_error == 'function') {
+                options.on_error(error);
+            }
+            else if (options.on_error !== false) {
+                console.log(error);
+            }
         }
 
         function load_finished() {

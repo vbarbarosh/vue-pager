@@ -19,6 +19,16 @@ describe('vue_pager', function () {
         const expecting = {limit: 0, offset: 0, total: 0, items: []};
         assert.deepStrictEqual(having, expecting);
     });
+    it('should reset error on successful response', async function () {
+        let fn = function () { throw new Error(); };
+        const app = new Vue({data: {pager: vue_pager(() => fn(), {on_error: false})}});
+        await wait(app, 'pager.error');
+        assert(app.pager.error !== null);
+        fn = function () { return {limit: 0, offset: 0, total: 0, items: []}; };
+        app.pager.reload();
+        await wait(app, 'pager.error');
+        assert(app.pager.error === null);
+    });
 });
 
 function wait(app, prop)
