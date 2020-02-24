@@ -8,7 +8,36 @@ npm i @vbarbarosh/vue-pager
 
 ## Usage
 
-### Usage • JavaScript
+The goal of this package is to provide a reactive
+object to any paged data. Technically, this object
+is nothing more than a thin wrapper around async
+`fn` function. This function will be called each
+time a paged data is requested.
+
+The following reactive properties are provided: `limit`,
+`offset`, `total`, and `items` for items. `page_active`,
+`page_total`, and `page_numbers` for pages.
+
+### Usage • Step 1: Create `fn` function
+
+```javascript
+// http://www.filltext.com/?rows=100&fname={firstName}&lname={lastName}&tel={phone|format}&address={streetAddress}&city={city}&state={usState|abbr}&zip={zip}&pretty=true
+const api_articles_query_db = Array(100).fill(0).map(function (v, i) {
+    return {uid: i + 1, author: `${faker.name.firstName()} ${faker.name.lastName()}`, title: faker.lorem.sentence()};
+});
+
+function api_articles_query(query)
+{
+    const limit = Math.max(0, +query.limit || 10);
+    const offset = Math.max(0, +query.offset || 0);
+    const total = api_articles_query_db.length;
+    const items = api_articles_query_db.slice(offset, offset + limit);
+    const ms = faker.random.number({min: 100, max: 500});
+    return Promise.delay(ms).return({limit, offset, total, items});
+}
+```
+
+### Usage • Step 2: Create pager object
 
 ```javascript
 import Vue from 'vue';
@@ -17,17 +46,12 @@ import vue_pager from '@vbarbarosh/vue-pager';
 new Vue({
     el: '#app',
     data: {
-        pager: vue_pager(fn),
+        pager: vue_pager(api_articles_query),
     },
 });
-
-function fn({limit, offset})
-{
-    return {limit: ..., offset: ..., total: ..., items: [...]};
-}
 ```
 
-### Usage • HTML
+### Usage • Step 3: Create html
 
 ```html
 <ul>
@@ -41,7 +65,7 @@ function fn({limit, offset})
 <div v-if="pager.error">{{ error }}</div>
 ```
 
-### Usage • Props
+## Props
 
 | Name | Type | Description
 | --- | :--- | :---
