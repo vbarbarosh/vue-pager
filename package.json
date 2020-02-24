@@ -11,6 +11,9 @@
     "src",
     "dist/*.js"
   ],
+  "keywords": [
+    "vue", "pager", "pagination"
+  ],
   "scripts": {
     "build": "webpack",
     "test": "mjs src/*.m.js"
