@@ -52,13 +52,13 @@ function vue_pager(fn, options = {})
                 out.page_active++;
             }
         },
-        goto(page) {
-            if (out.can_goto(page)) {
-                out.page_active = page;
+        goto(page_no) {
+            if (out.can_goto(page_no)) {
+                out.page_active = page_no;
             }
         },
-        can_goto(page) {
-            return page > 0 && page <= out.page_total; // && page != pager.page_active;
+        can_goto(page_no) {
+            return page_no >= 1 && page_no <= out.page_total;
         },
         rewind() {
             out.reactive.offset = 0;
