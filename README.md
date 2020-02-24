@@ -23,7 +23,11 @@ The following reactive properties are provided: `limit`,
 ```javascript
 // http://www.filltext.com/?rows=100&fname={firstName}&lname={lastName}&tel={phone|format}&address={streetAddress}&city={city}&state={usState|abbr}&zip={zip}&pretty=true
 const api_articles_query_db = Array(100).fill(0).map(function (v, i) {
-    return {uid: i + 1, author: `${faker.name.firstName()} ${faker.name.lastName()}`, title: faker.lorem.sentence()};
+    return {
+        uid: i + 1,
+        author: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        title: faker.lorem.sentence(),
+    };
 });
 
 function api_articles_query(query)
