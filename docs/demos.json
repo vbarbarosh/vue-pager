@@ -1,0 +1,33 @@
+[
+    {
+        "file": "demos/demo-vue-pager-1-hello.html",
+        "html": "<select v-model=\"pager.page_active\">\n    <option v-for=\"page_no in pager.page_numbers\" v-bind:value=\"page_no\">\n        Page {{ page_no }}\n    </option>\n</select>\n<span v-if=\"pager.is_loading\">\n    Loading...\n</span>\n<br>\n<div v-if=\"pager.error\">\n    {{ pager.error }}\n</div>\n<ul>\n    <li v-for=\"item in pager.items\" v-bind:key=\"item.uid\">\n        {{ item.title }}\n    </li>\n</ul>\n",
+        "js": "// http://www.filltext.com/?rows=100&fname={firstName}&lname={lastName}&tel={phone|format}&address={streetAddress}&city={city}&state={usState|abbr}&zip={zip}&pretty=true\nconst api_articles_query_db = Array(100).fill(0).map(function (v, i) {\n    return {uid: i + 1, author: `${faker.name.firstName()} ${faker.name.lastName()}`, title: faker.lorem.sentence()};\n});\n\nfunction api_articles_query(query)\n{\n    const limit = Math.max(0, +query.limit || 10);\n    const offset = Math.max(0, +query.offset || 0);\n    const total = api_articles_query_db.length;\n    const items = api_articles_query_db.slice(offset, offset + limit);\n    const ms = faker.random.number({min: 100, max: 500});\n    return Promise.delay(ms).return({limit, offset, total, items});\n}\n\nnew Vue({\n    el: '#app',\n    data: {\n        pager: vue_pager(api_articles_query),\n    },\n});\n",
+        "js_deps": [
+            "https://unpkg.com/bluebird@3.7.2/js/browser/bluebird.js",
+            "https://unpkg.com/vue@2.6.11/dist/vue.js",
+            "https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.js",
+            "https://unpkg.com/@vbarbarosh/vue-pager@1.0.2/dist/vue-pager.js"
+        ],
+        "css": null,
+        "css_deps": []
+    },
+    {
+        "file": "demos/demo-vue-pager-2-bootstrap-table.html",
+        "html": "<div class=\"row\">\n    <div class=\"col-md-2\">\n        <label>\n            Page:\n            <select v-model=\"pager.page_active\" class=\"form-control\">\n                <option v-for=\"page_no in pager.page_numbers\">\n                    {{ page_no }}\n                </option>\n            </select>\n        </label>\n        <br>\n        <label>\n            Limit:\n            <select v-model=\"pager.limit\" class=\"form-control\">\n                <option v-for=\"limit in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]\">\n                    {{ limit }}\n                </option>\n            </select>\n        </label>\n    </div>\n    <div class=\"col-md-10\">\n        <div v-if=\"pager.is_loading\" class=\"alert alert-info\">\n            Loading...\n        </div>\n        <div v-if=\"pager.error\" class=\"alert alert-danger\">\n            {{ pager.error }}\n        </div>\n        <table class=\"table table-bordered table-condensed\">\n            <thead>\n            <tr>\n                <th scope=\"col\">uid</th>\n                <th scope=\"col\">author</th>\n                <th scope=\"col\">title</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr v-for=\"item in pager.items\">\n                <th>{{ item.uid }}</th>\n                <td>{{ item.author }}</td>\n                <td>{{ item.title }}</td>\n            </tr>\n        </tbody></table>\n        <nav>\n            <ul class=\"pagination\">\n                <li v-bind:class=\"{disabled: !pager.has_prev}\" class=\"page-item\">\n                    <a v-on:click.prevent=\"pager.prev\" class=\"page-link\" href=\"#\" aria-label=\"Previous\">\n                        <span aria-hidden=\"true\">&#xAB;</span>\n                    </a>\n                </li>\n                <li v-for=\"page_no in pager.page_numbers\" v-bind:class=\"{active: pager.page_active == page_no}\" class=\"page-item\">\n                    <a v-on:click.prevent=\"pager.goto(page_no)\" class=\"page-link\" href=\"#\">\n                        {{ page_no }}\n                    </a>\n                </li>\n                <li v-bind:class=\"{disabled: !pager.has_next}\" class=\"page-item\">\n                    <a v-on:click.prevent=\"pager.next\" class=\"page-link\" href=\"#\" aria-label=\"Next\">\n                        <span aria-hidden=\"true\">&#xBB;</span>\n                    </a>\n                </li>\n            </ul>\n        </nav>\n    </div>\n</div>\n",
+        "js": "// http://www.filltext.com/?rows=100&fname={firstName}&lname={lastName}&tel={phone|format}&address={streetAddress}&city={city}&state={usState|abbr}&zip={zip}&pretty=true\nconst api_articles_query_db = Array(100).fill(0).map(function (v, i) {\n    return {uid: i + 1, author: `${faker.name.firstName()} ${faker.name.lastName()}`, title: faker.lorem.sentence()};\n});\n\nfunction api_articles_query(query)\n{\n    const limit = Math.max(0, +query.limit || 10);\n    const offset = Math.max(0, +query.offset || 0);\n    const total = api_articles_query_db.length;\n    const items = api_articles_query_db.slice(offset, offset + limit);\n    const ms = faker.random.number({min: 100, max: 500});\n    return Promise.delay(ms).return({limit, offset, total, items});\n}\n\nnew Vue({\n    el: '#app',\n    data: {\n        pager: vue_pager(api_articles_query),\n    },\n});\n",
+        "js_deps": [
+            "https://unpkg.com/jquery@3.4.1/dist/jquery.min.js",
+            "https://unpkg.com/popper.js@1.16.0/dist/umd/popper.min.js",
+            "https://unpkg.com/bootstrap@4.4.1/dist/js/bootstrap.min.js",
+            "https://unpkg.com/bluebird@3.7.2/js/browser/bluebird.js",
+            "https://unpkg.com/vue@2.6.11/dist/vue.js",
+            "https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js",
+            "https://unpkg.com/@vbarbarosh/vue-pager@1.0.2/dist/vue-pager.js"
+        ],
+        "css": null,
+        "css_deps": [
+            "https://unpkg.com/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        ]
+    }
+]

@@ -162,13 +162,13 @@ function vue_pager(fn) {
         out.page_active++;
       }
     },
-    "goto": function goto(page) {
-      if (out.can_goto(page)) {
-        out.page_active = page;
+    "goto": function goto(page_no) {
+      if (out.can_goto(page_no)) {
+        out.page_active = page_no;
       }
     },
-    can_goto: function can_goto(page) {
-      return page > 0 && page <= out.page_total; // && page != pager.page_active;
+    can_goto: function can_goto(page_no) {
+      return page_no >= 1 && page_no <= out.page_total;
     },
     rewind: function rewind() {
       out.reactive.offset = 0;
@@ -177,8 +177,8 @@ function vue_pager(fn) {
     page_total: null,
     page_numbers: null,
     reload: load_begin
-  }; // Computed properties are not accessible from `data` function. Postpone `load_begin`
-  // with `Vue.nextTick` will seems to fix this.
+  }; // Computed properties are not accessible from `data` function (`fn` might require this data).
+  // Postpone `load_begin` with `Vue.nextTick` will seems to fix this.
 
   vue__WEBPACK_IMPORTED_MODULE_0___default.a.nextTick(load_begin);
   return out;
