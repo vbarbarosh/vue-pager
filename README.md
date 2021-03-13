@@ -6,6 +6,10 @@ A reactive object for working with paged data in Vue.
 npm i @vbarbarosh/vue-pager
 ```
 
+## Codepen
+
+https://codepen.io/vbarbarosh/pen/xxRMaaz?editors=1000
+
 ## Usage
 
 The goal of this package is to provide a reactive
