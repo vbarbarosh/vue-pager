@@ -10,6 +10,10 @@ npm i @vbarbarosh/vue-pager
 
 https://codepen.io/vbarbarosh/pen/xxRMaaz?editors=1000
 
+## YouTube
+
+https://www.youtube.com/watch?v=Q55jBnEcc3g
+
 ## Usage
 
 The goal of this package is to provide a reactive
