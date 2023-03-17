@@ -29,8 +29,8 @@
   },
   "homepage": "https://vue-pager.vbarbarosh.com",
   "peerDependencies": {
-    "bluebird": "^3.7.2",
-    "vue": "^2.6.11"
+    "bluebird": "^3",
+    "vue": "^2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
@@ -38,7 +38,7 @@
     "@vbarbarosh/mjs": "github:vbarbarosh/mjs",
     "babel-loader": "^8.0.6",
     "cherio": "^1.0.0-rc.2",
-    "vue": "^2.6.11",
+    "vue": "^2.7.14",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }
