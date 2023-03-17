@@ -10,7 +10,6 @@ function render_config(mode)
         output: {
             filename: is_development ? 'vue-pager.js' : 'vue-pager.min.js',
             library: 'vue_pager',
-            libraryExport: 'default',
         },
         externals: {
             vue: 'Vue',
