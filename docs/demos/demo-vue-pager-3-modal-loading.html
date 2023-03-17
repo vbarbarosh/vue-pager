@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://unpkg.com/@vbarbarosh/smcss@0.3.20/dist/sm.css" rel="stylesheet" />
-    <title>@vbarbarosh/vue-pager • The most basic example</title>
+    <title>@vbarbarosh/vue-pager • Display modal while loading</title>
 </head>
 <body class="checkerboard">
 
@@ -35,9 +36,30 @@
 <script src="https://unpkg.com/bluebird@3.7.2/js/browser/bluebird.js" data-include></script>
 <script src="https://unpkg.com/vue@2.6.11/dist/vue.js" data-include></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.js" data-include></script>
+<script src="https://unpkg.com/jquery@3.6.4/dist/jquery.js" data-include></script>
+<!--
 <script src="https://unpkg.com/@vbarbarosh/vue-pager@1.0.2/dist/vue-pager.js" data-include></script>
+-->
+<script src="../../dist/vue-pager.js" data-include></script>
+<script src="https://unpkg.com/@vbarbarosh/vue-modal@1.0.0/dist/vue-modal.js" data-include></script>
+
+<script id="templ-modal-loading" type="text/html">
+    <!-- https://smcss.vbarbarosh.com/demos/#modal -->
+    <div class="fix-f oa flex-row" style="background: rgba(0, 0, 0, 0.25)">
+        <div class="ma">
+            <div class="ma mv15 p15 mg15 white border bs15">
+                Loading...
+            </div>
+        </div>
+    </div>
+</script>
 
 <script id="js">
+    Vue.component('modal-loading', {
+        template: '#templ-modal-loading',
+        props: ['value'],
+    });
+
     // http://www.filltext.com/?rows=100&fname={firstName}&lname={lastName}&tel={phone|format}&address={streetAddress}&city={city}&state={usState|abbr}&zip={zip}&pretty=true
     const api_articles_query_db = Array(100).fill(0).map(function (v, i) {
         return {uid: i + 1, author: `${faker.name.firstName()} ${faker.name.lastName()}`, title: faker.lorem.sentence()};
@@ -53,11 +75,27 @@
         return Promise.delay(ms).return({limit, offset, total, items});
     }
 
+    function modal_loading(value)
+    {
+        return vue_modal({template: `<modal-loading v-model="value" />`, data: {value}});
+    }
+
     new Vue({
         el: '#app',
         data: {
             pager: vue_pager(api_articles_query),
         },
+        watch: {
+            'pager.is_loading': {
+                immediate: true,
+                handler: function (next) {
+                    if (!next) {
+                        return;
+                    }
+                    this.pager.promise_loaded().then(modal_loading().end);
+                },
+            },
+        }
     });
 </script>
 

@@ -1,9 +1,10 @@
-import Vue from 'vue';
-import Promise from 'bluebird';
+const Vue = require('vue');
+const Promise = require('bluebird');
 
 function vue_pager(fn, options = {})
 {
     let token = 0;
+    const promise_loaded_items = [];
 
     const out = {
         reactive: {
@@ -64,6 +65,12 @@ function vue_pager(fn, options = {})
             out.reactive.offset = 0;
             return load_begin();
         },
+        promise_loaded: function () {
+            if (!this.is_loading) {
+                return Promise.resolve();
+            }
+            return new Promise((resolve, reject) => promise_loaded_items.push({resolve, reject}));
+        },
         page_total: null,
         page_numbers: null,
         reload: load_begin,
@@ -81,7 +88,9 @@ function vue_pager(fn, options = {})
         return Promise.method(fn)(out.reactive).then(load_succeed).catch(load_failed).finally(load_finished);
 
         function load_succeed(response) {
-            if (t != token) return;
+            if (t !== token) {
+                return;
+            }
             out.error = null;
             out.response = response;
             out.reactive.limit = response.limit;
@@ -99,7 +108,9 @@ function vue_pager(fn, options = {})
         }
 
         function load_failed(error) {
-            if (t != token) return;
+            if (t !== token) {
+                return;
+            }
             out.error = error;
             out.response = null;
             // The first use-case for this options is vue_pager.m.js
@@ -112,10 +123,21 @@ function vue_pager(fn, options = {})
         }
 
         function load_finished() {
-            if (t != token) return;
+            if (t !== token) {
+                return;
+            }
             out.is_loading = false;
+            const {error} = out;
+            promise_loaded_items.splice(0).forEach(function ({resolve, reject}) {
+                try {
+                    error ? reject(error) : resolve();
+                }
+                catch (error2) {
+                    console.log(error2);
+                }
+            });
         }
     }
 }
 
-export default vue_pager;
+module.exports = vue_pager;
