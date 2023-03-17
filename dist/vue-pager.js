@@ -91,21 +91,15 @@ var vue_pager =
 /*!**************************!*\
   !*** ./src/vue_pager.js ***!
   \**************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "vue");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var bluebird__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bluebird */ "bluebird");
-/* harmony import */ var bluebird__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bluebird__WEBPACK_IMPORTED_MODULE_1__);
-
-
-
+var Vue = __webpack_require__(/*! vue */ "vue");
+var Promise = __webpack_require__(/*! bluebird */ "bluebird");
 function vue_pager(fn) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var token = 0;
+  var promise_loaded_items = [];
   var out = {
     reactive: {
       limit: options.limit,
@@ -116,42 +110,33 @@ function vue_pager(fn) {
     items: [],
     error: null,
     is_loading: true,
-
     get limit() {
       return out.reactive.limit;
     },
-
     set limit(value) {
       out.reactive.limit = value;
       load_begin();
     },
-
     get offset() {
       return out.reactive.offset;
     },
-
     set offset(value) {
       out.reactive.offset = value;
       load_begin();
     },
-
     get page_active() {
       return Math.ceil((out.reactive.offset + 1) / out.reactive.limit) || 1;
     },
-
     set page_active(value) {
       out.reactive.offset = out.reactive.limit * (value - 1);
       load_begin();
     },
-
     get has_prev() {
       return out.page_active > 1;
     },
-
     get has_next() {
       return out.page_active < out.page_total;
     },
-
     prev: function prev() {
       if (out.has_prev) {
         out.page_active--;
@@ -174,22 +159,34 @@ function vue_pager(fn) {
       out.reactive.offset = 0;
       return load_begin();
     },
+    promise_loaded: function promise_loaded() {
+      if (!this.is_loading) {
+        return Promise.resolve();
+      }
+      return new Promise(function (resolve, reject) {
+        return promise_loaded_items.push({
+          resolve: resolve,
+          reject: reject
+        });
+      });
+    },
     page_total: null,
     page_numbers: null,
     reload: load_begin
-  }; // Computed properties are not accessible from `data` function (`fn` might require this data).
+  };
+
+  // Computed properties are not accessible from `data` function (`fn` might require this data).
   // Postpone `load_begin` with `Vue.nextTick` will seems to fix this.
-
-  vue__WEBPACK_IMPORTED_MODULE_0___default.a.nextTick(load_begin);
+  Vue.nextTick(load_begin);
   return out;
-
   function load_begin() {
     var t = ++token;
     out.is_loading = true;
-    return bluebird__WEBPACK_IMPORTED_MODULE_1___default.a.method(fn)(out.reactive).then(load_succeed)["catch"](load_failed)["finally"](load_finished);
-
+    return Promise.method(fn)(out.reactive).then(load_succeed)["catch"](load_failed)["finally"](load_finished);
     function load_succeed(response) {
-      if (t != token) return;
+      if (t !== token) {
+        return;
+      }
       out.error = null;
       out.response = response;
       out.reactive.limit = response.limit;
@@ -198,36 +195,47 @@ function vue_pager(fn) {
       out.page_numbers = Array(out.page_total).fill(0).map(function (v, i) {
         return i + 1;
       });
-      out.total = response.total; // XXX rows for backward compatibility; will be remove at next major release
-
-      out.items = response.items || response.rows; // http://bluebirdjs.com/docs/warning-explanations.html#warning-a-promise-was-created-in-a-handler-but-was-not-returned-from-it
+      out.total = response.total;
+      // XXX rows for backward compatibility; will be remove at next major release
+      out.items = response.items || response.rows;
+      // http://bluebirdjs.com/docs/warning-explanations.html#warning-a-promise-was-created-in-a-handler-but-was-not-returned-from-it
       // > If you know what you're doing and don't want to silence all
       // > warnings, you can create runaway promises without causing
       // > this warning by returning e.g. null
-
       return null;
     }
-
     function load_failed(error) {
-      if (t != token) return;
+      if (t !== token) {
+        return;
+      }
       out.error = error;
-      out.response = null; // The first use-case for this options is vue_pager.m.js
-
+      out.response = null;
+      // The first use-case for this options is vue_pager.m.js
       if (typeof options.on_error == 'function') {
         options.on_error(error);
       } else if (options.on_error !== false) {
         console.log(error);
       }
     }
-
     function load_finished() {
-      if (t != token) return;
+      if (t !== token) {
+        return;
+      }
       out.is_loading = false;
+      var error = out.error;
+      promise_loaded_items.splice(0).forEach(function (_ref) {
+        var resolve = _ref.resolve,
+          reject = _ref.reject;
+        try {
+          error ? reject(error) : resolve();
+        } catch (error2) {
+          console.log(error2);
+        }
+      });
     }
   }
 }
-
-/* harmony default export */ __webpack_exports__["default"] = (vue_pager);
+module.exports = vue_pager;
 
 /***/ }),
 
@@ -253,4 +261,4 @@ module.exports = Vue;
 
 /***/ })
 
-/******/ })["default"];
+/******/ });
