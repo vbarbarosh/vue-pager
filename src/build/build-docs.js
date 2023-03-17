@@ -1,10 +1,8 @@
-#!/usr/bin/env node-esm
+#!/usr/bin/env node
 
-// node-esm is just a shell script with: `node -r esm "$@"`
-
-import Promise from 'bluebird';
-import cherio from 'cherio';
-import fs from 'fs';
+const Promise = require('bluebird');
+const cherio = require('cherio');
+const fs = require('fs');
 
 const fs_read = Promise.promisify(fs.readFile);
 
