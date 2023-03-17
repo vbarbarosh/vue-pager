@@ -99,3 +99,4 @@ new Vue({
 | `goto(page_no)`     | `Function` | Go to the specified page
 | `rewind()`          | `Function` | Reset offset and fetch very first page
 | `reload()`          | `Function` | Fetch current page again
+| `promise_loaded()`  | `Function` | Returns a promise which would be resolved after `is_loading=false`;
