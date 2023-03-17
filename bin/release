@@ -26,10 +26,7 @@ fi
 
 npm run test
 
-# Increase a version without commiting it and making a tag
-# XXX This is a hack to disable commiting by substituting `true` for `git`
-npm version $1 --git=/bin/true
-# Rebuild dist
+npm version $1 --no-git-tag-version
 rm -rf dist
 npm run build
 
