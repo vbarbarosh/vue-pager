@@ -1,6 +1,7 @@
-import Vue from 'vue';
-import Promise from 'bluebird';
-import vue_pager from './vue_pager';
+const Promise = require('bluebird');
+const Vue = require('vue');
+const assert = require('assert');
+const vue_pager = require('./vue_pager');
 
 describe('vue_pager', function () {
     it('should handle basic response', async function () {
