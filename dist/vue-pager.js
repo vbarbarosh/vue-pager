@@ -214,9 +214,9 @@ function vue_pager(fn) {
       out.error = error;
       out.response = null;
       // The first use-case for this options is vue_pager.m.js
-      if (typeof options.on_error == 'function') {
-        options.on_error(error);
-      } else if (options.on_error !== false) {
+      if (typeof options.onerror == 'function') {
+        options.onerror(error);
+      } else if (options.onerror !== false) {
         console.log(error);
       }
     }
