@@ -22,7 +22,7 @@ describe('vue_pager', function () {
     });
     it('should reset error on successful response', async function () {
         let fn = function () { throw new Error(); };
-        const app = new Vue({data: {pager: vue_pager(() => fn(), {on_error: false})}});
+        const app = new Vue({data: {pager: vue_pager(() => fn(), {onerror: false})}});
         await wait(app, 'pager.error');
         assert(app.pager.error !== null);
         fn = function () { return {limit: 0, offset: 0, total: 0, items: []}; };
