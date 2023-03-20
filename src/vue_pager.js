@@ -44,7 +44,7 @@ function vue_pager(fn, options = {})
             return out.page_active < out.page_total;
         },
         get has_response() {
-            return pager.response !== null;
+            return out.response !== null;
         },
         prev() {
             if (out.has_prev) {
@@ -62,7 +62,7 @@ function vue_pager(fn, options = {})
             }
         },
         can_goto(page_no) {
-            return page_no > 0 && page_no <= pager.page_total && page_no != pager.page_active;
+            return page_no > 0 && page_no <= out.page_total && page_no != out.page_active;
         },
         rewind() {
             out.reactive.offset = 0;
