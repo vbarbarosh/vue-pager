@@ -94,8 +94,8 @@ var vue_pager =
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Vue = __webpack_require__(/*! vue */ "vue");
-var Promise = __webpack_require__(/*! bluebird */ "bluebird");
+var Vue = __webpack_require__(/*! vue */ "vue")["default"] || __webpack_require__(/*! vue */ "vue");
+var Promise = __webpack_require__(/*! bluebird */ "bluebird")["default"] || __webpack_require__(/*! bluebird */ "bluebird");
 function vue_pager(fn) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var token = 0;
