@@ -1,5 +1,5 @@
-const Vue = require('vue');
-const Promise = require('bluebird');
+const Vue = require('vue').default || require('vue');
+const Promise = require('bluebird').default || require('bluebird');
 
 function vue_pager(fn, options = {})
 {
