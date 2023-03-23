@@ -1,7 +1,6 @@
 function render_config(mode)
 {
-    // noinspection EqualityComparisonWithCoercionJS
-    const is_development = (mode == 'development');
+    const is_development = (mode === 'development');
 
     return {
         mode,
