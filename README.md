@@ -12,7 +12,7 @@ https://codepen.io/vbarbarosh/pen/xxRMaaz?editors=1000
 
 ## YouTube
 
-https://www.youtube.com/watch?v=Q55jBnEcc3g
+[![ALT](https://img.youtube.com/vi/Q55jBnEcc3g/0.jpg)](https://www.youtube.com/watch?v=Q55jBnEcc3g)
 
 ## Usage
 
