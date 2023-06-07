@@ -30,6 +30,45 @@ describe('vue_pager', function () {
         await wait(app, 'pager.error');
         assert(app.pager.error === null);
     });
+
+    // const page_reports_list = {
+    //     data: function () {
+    //         return {
+    //             pager: vue_pager(api_reports_list),
+    //         };
+    //     },
+    //     methods: {
+    //         refresh: async function () {
+    //             await this.pager.refresh();
+    //         },
+    //     },
+    //     created: async function () {
+    //         await blocking(this.refresh());
+    //     },
+    // };
+    describe('refresh', function() {
+        it('should not initiate new request when old one is still loading', async function () {
+            const calls = [];
+            const app = new Vue({
+                data: {
+                    pager: vue_pager(function (query) {
+                        calls.push(query);
+                        return {limit: 5, offset: 0, total: 3, items: [1,2,3]};
+                    }),
+                },
+                methods: {
+                    refresh: async function () {
+                        await this.pager.refresh();
+                    },
+                },
+                created: async function () {
+                    await this.refresh();
+                }
+            });
+            await wait(app, 'pager.items');
+            assert.strictEqual(1, calls.length);
+        });
+    });
 });
 
 function wait(app, prop)
