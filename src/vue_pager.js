@@ -15,7 +15,7 @@ function vue_pager(fn, options = {})
         total: undefined,
         items: [],
         error: null,
-        is_loading: true,
+        is_loading: false,
         get limit() {
             return out.reactive.limit;
         },
@@ -77,11 +77,17 @@ function vue_pager(fn, options = {})
         page_total: null,
         page_numbers: null,
         reload: load_begin,
+        refresh: function () {
+            if (this.is_loading) {
+                return this.promise_loaded();
+            }
+            return load_begin();
+        },
     };
 
     // Computed properties are not accessible from `data` function (`fn` might require this data).
     // Postpone `load_begin` with `Vue.nextTick` will seems to fix this.
-    Vue.nextTick(load_begin);
+    Vue.nextTick(out.refresh);
     return out;
 
     function load_begin() {
