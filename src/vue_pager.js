@@ -87,7 +87,7 @@ function vue_pager(fn, options = {})
 
     // Computed properties are not accessible from `data` function (`fn` might require this data).
     // Postpone `load_begin` with `Vue.nextTick` will seems to fix this.
-    Vue.nextTick(out.refresh);
+    Vue.nextTick(out.refresh.bind(out));
     return out;
 
     function load_begin() {
