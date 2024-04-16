@@ -77,15 +77,15 @@ function vue_pager(fn) {
       return load_begin();
     },
     promise_loaded: function promise_loaded() {
-      if (!this.is_loading) {
-        return Promise.resolve();
-      }
-      return new Promise(function (resolve, reject) {
-        return promise_loaded_items.push({
-          resolve: resolve,
-          reject: reject
+      if (this.response === null || this.is_loading) {
+        return new Promise(function (resolve, reject) {
+          return promise_loaded_items.push({
+            resolve: resolve,
+            reject: reject
+          });
         });
-      });
+      }
+      return Promise.resolve();
     },
     page_total: null,
     page_numbers: null,
