@@ -69,10 +69,10 @@ function vue_pager(fn, options = {})
             return load_begin();
         },
         promise_loaded: function () {
-            if (!this.is_loading) {
-                return Promise.resolve();
+            if (this.response === null || this.is_loading) {
+                return new Promise((resolve, reject) => promise_loaded_items.push({resolve, reject}));
             }
-            return new Promise((resolve, reject) => promise_loaded_items.push({resolve, reject}));
+            return Promise.resolve();
         },
         page_total: null,
         page_numbers: null,

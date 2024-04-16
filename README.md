@@ -100,3 +100,19 @@ new Vue({
 | `rewind()`          | `Function` | Reset offset and fetch very first page
 | `reload()`          | `Function` | Fetch current page again
 | `promise_loaded()`  | `Function` | Returns a promise which would be resolved after `is_loading=false`;
+
+## Edge case • Wait until pager received first response
+
+```javascript
+new Vue({
+    data: function () {
+        return {
+            pager: null,
+        };
+    },
+    created: async function () {
+        this.pager = vue_pager(api_pages_list);
+        await this.pager.promise_loaded();
+    },
+});
+```

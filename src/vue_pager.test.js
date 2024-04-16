@@ -30,6 +30,23 @@ describe('vue_pager', function () {
         await wait(app, 'pager.error');
         assert(app.pager.error === null);
     });
+    it('Edge case • Wait until pager received first response', async function () {
+        const app = new Vue({
+            data: {
+                pager: null,
+            },
+            created: async function () {
+                await new Promise(resolve => Vue.nextTick(resolve));
+                this.pager = vue_pager(api_pages_list);
+                const p = this.pager.promise_loaded();
+                assert(p.isPending());
+                await p;
+                assert(p.isResolved());
+                assert(app.pager.total);
+            },
+        });
+        await wait(app, 'pager.items');
+    });
 
     // const page_reports_list = {
     //     data: function () {
@@ -79,4 +96,14 @@ function wait(app, prop)
             resolve(value);
         });
     });
+}
+
+function api_pages_list()
+{
+    return {
+        items: [1,2,3,4,5],
+        total: 5,
+        limit: 5,
+        offset: 0,
+    };
 }
