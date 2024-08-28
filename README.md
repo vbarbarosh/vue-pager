@@ -116,3 +116,7 @@ new Vue({
     },
 });
 ```
+
+## Related
+
+* https://github.com/bramus/js-pagination-sequence
