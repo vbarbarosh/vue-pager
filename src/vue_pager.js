@@ -5,10 +5,11 @@ function vue_pager(fn, options = {})
 {
     let token = 0;
     const promise_loaded_items = [];
-    const hidden = {
+
+    const hidden = Vue.reactive({
         limit: options.limit,
         offset: options.offset,
-    };
+    });
 
     const out = Vue.reactive({
         response: null,
