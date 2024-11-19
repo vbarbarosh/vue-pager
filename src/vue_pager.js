@@ -5,36 +5,36 @@ function vue_pager(fn, options = {})
 {
     let token = 0;
     const promise_loaded_items = [];
+    const hidden = {
+        limit: options.limit,
+        offset: options.offset,
+    };
 
-    const out = {
-        reactive: {
-            limit: options.limit,
-            offset: options.offset,
-        },
+    const out = Vue.reactive({
         response: null,
         total: undefined,
         items: [],
         error: null,
         is_loading: false,
         get limit() {
-            return out.reactive.limit;
+            return hidden.limit;
         },
         set limit(value) {
-            out.reactive.limit = value;
+            hidden.limit = value;
             load_begin();
         },
         get offset() {
-            return out.reactive.offset;
+            return hidden.offset;
         },
         set offset(value) {
-            out.reactive.offset = value;
+            hidden.offset = value;
             load_begin();
         },
         get page_active() {
-            return Math.ceil((out.reactive.offset+1)/out.reactive.limit) || 1;
+            return Math.ceil((hidden.offset+1)/hidden.limit) || 1;
         },
         set page_active(value) {
-            out.reactive.offset = out.reactive.limit*(value-1);
+            hidden.offset = hidden.limit*(value-1);
             load_begin();
         },
         get has_prev() {
@@ -65,7 +65,7 @@ function vue_pager(fn, options = {})
             return page_no > 0 && page_no <= out.page_total && page_no != out.page_active;
         },
         rewind() {
-            out.reactive.offset = 0;
+            hidden.offset = 0;
             return load_begin();
         },
         promise_loaded: function () {
@@ -83,7 +83,7 @@ function vue_pager(fn, options = {})
             }
             return load_begin();
         },
-    };
+    });
 
     // Computed properties are not accessible from `data` function (`fn` might require this data).
     // Postpone `load_begin` with `Vue.nextTick` will seems to fix this.
@@ -94,7 +94,7 @@ function vue_pager(fn, options = {})
         const t = ++token;
 
         out.is_loading = true;
-        return Promise.method(fn)(out.reactive).then(load_succeed).catch(load_failed).finally(load_finished);
+        return Promise.method(fn)(hidden).then(load_succeed).catch(load_failed).finally(load_finished);
 
         function load_succeed(response) {
             if (t !== token) {
@@ -102,8 +102,8 @@ function vue_pager(fn, options = {})
             }
             out.error = null;
             out.response = response;
-            out.reactive.limit = response.limit;
-            out.reactive.offset = response.offset;
+            hidden.limit = response.limit;
+            hidden.offset = response.offset;
             out.page_total = Math.ceil(response.total/response.limit) || 0;
             out.page_numbers = Array(out.page_total).fill(0).map((v,i) => i+1);
             out.total = response.total;
