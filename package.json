@@ -1,7 +1,7 @@
 {
   "author": "Vladimir Barbarosh",
   "name": "@vbarbarosh/vue-pager",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "A reactive object for working with paged data in Vue",
   "license": "ISC",
   "main": "src/vue_pager.js",

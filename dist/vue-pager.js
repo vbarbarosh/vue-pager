@@ -14,10 +14,10 @@ function vue_pager(fn) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var token = 0;
   var promise_loaded_items = [];
-  var hidden = {
+  var hidden = Vue.reactive({
     limit: options.limit,
     offset: options.offset
-  };
+  });
   var out = Vue.reactive({
     response: null,
     total: undefined,
