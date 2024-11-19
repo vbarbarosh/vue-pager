@@ -6,7 +6,7 @@ function vue_pager(fn, options = {})
     let token = 0;
     const promise_loaded_items = [];
 
-    const out = {
+    const out = reactive({
         reactive: {
             limit: options.limit,
             offset: options.offset,
@@ -83,7 +83,7 @@ function vue_pager(fn, options = {})
             }
             return load_begin();
         },
-    };
+    });
 
     // Computed properties are not accessible from `data` function (`fn` might require this data).
     // Postpone `load_begin` with `Vue.nextTick` will seems to fix this.
@@ -147,6 +147,16 @@ function vue_pager(fn, options = {})
             });
         }
     }
+}
+
+function reactive(value)
+{
+    // Vue 3
+    if (Vue.reactive) {
+        return Vue.reactive(value);
+    }
+    // Vue 2
+    return value;
 }
 
 module.exports = vue_pager;
