@@ -48,6 +48,20 @@ describe('vue_pager', function () {
         await wait(app, 'pager.items');
     });
 
+    describe('promise_loaded', function () {
+        it('should return after the initial successful load', async function () {
+            const pager = vue_pager(api_pages_list);
+            assert.strictEqual(pager.is_loading, false);
+            assert.strictEqual(pager.has_response, false);
+            assert.strictEqual(pager.items.length, 0);
+            await pager.promise_loaded().finally(async function () {
+                assert.strictEqual(pager.is_loading, false);
+                assert.strictEqual(pager.has_response, true);
+                assert.strictEqual(pager.items.length, 5);
+            });
+        });
+    });
+
     // const page_reports_list = {
     //     data: function () {
     //         return {
